@@ -3,14 +3,14 @@
 
 Name:           tracker
 Version:        2.1.5
-Release:        2
+Release:        3
 Summary:        A filesystem indexer, metadata storage system and search tool
 License:        GPLv2+
 URL:            https://wiki.gnome.org/Projects/Tracker
 Source0:        https://download.gnome.org/sources/%{name}/2.1/%{name}-%{version}.tar.xz
 Source1:        tracker.conf
 
-BuildRequires:  graphviz gtk-doc systemd
+BuildRequires:  graphviz gtk-doc systemd libxslt
 BuildRequires:  intltool libappstream-glib vala
 BuildRequires:  pkgconfig(gobject-introspection-1.0)
 BuildRequires:  pkgconfig(icu-i18n) pkgconfig(icu-uc)
@@ -140,6 +140,12 @@ install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_ar
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Nov 21 2019 chengquan <chengquan3@huawei.com> - 2.1.5-3
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:add buildrequire of libxslt
+
 * Thu Sep 26 2019 openEuler Buildteam <buildteam@openeuler.org> - 2.1.5-2
 - Package init
 
