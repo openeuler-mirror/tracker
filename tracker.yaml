@@ -1,0 +1,4 @@
+version_control: gitlab.gnome
+src_repo: tracker
+tag_prefix: ^v
+seperator: .
