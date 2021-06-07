@@ -2,16 +2,16 @@
 %global systemd_units tracker-store.service
 
 Name:           tracker
-Version:        2.1.5
-Release:        3
+Version:        2.3.6
+Release:        1
 Summary:        A filesystem indexer, metadata storage system and search tool
 License:        GPLv2+
 URL:            https://wiki.gnome.org/Projects/Tracker
-Source0:        https://download.gnome.org/sources/%{name}/2.1/%{name}-%{version}.tar.xz
+Source0:        https://download.gnome.org/sources/%{name}/2.3/%{name}-%{version}.tar.xz
 Source1:        tracker.conf
 
-BuildRequires:  graphviz gtk-doc systemd libxslt
-BuildRequires:  intltool libappstream-glib vala
+BuildRequires:  graphviz gtk-doc systemd libxslt gettext meson intltool
+BuildRequires:  libappstream-glib vala libstemmer-devel dbus-daemon
 BuildRequires:  pkgconfig(gobject-introspection-1.0)
 BuildRequires:  pkgconfig(icu-i18n) pkgconfig(icu-uc)
 BuildRequires:  pkgconfig(json-glib-1.0) pkgconfig(libnm)
@@ -56,25 +56,19 @@ Man pages and other related documents for %{name}.
 %prep
 %autosetup -p1
 
-# unwanted rpaths
-sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
-
 %build
 # Disable the functional tests
-%configure --disable-static \
-           --enable-gtk-doc \
-           --with-unicode-support=libicu \
-           --disable-functional-tests \
-           --disable-silent-rules
-%make_build
+%meson \
+  -Ddocs=true \
+  -Dfunctional_tests=false \
+  -Dunicode_support=icu \
+  -Dsystemd_user_services=%{_userunitdir}
+%meson_build
 
 %install
-%make_install
+%meson_install
 
 find %{buildroot} -type f -name "*.la" -delete
-
-# Remove .so symlinks for private libraries
-rm -f %{buildroot}%{_libdir}/tracker-2.0/*.so
 
 %find_lang %{name}
 
@@ -97,14 +91,13 @@ install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_ar
 
 %files -f %{name}.lang
 %defattr(-,root,root)
-%license COPYING docs/reference/COPYING
+%license COPYING
 %doc AUTHORS
 %dir %{_datadir}/bash-completion
 %dir %{_datadir}/bash-completion/completions
 %dir %{_libdir}/girepository-1.0
 %{_datadir}/tracker/
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.service
-%config(noreplace) %{_sysconfdir}/xdg/autostart/tracker-store.desktop
 %{_datadir}/bash-completion/completions/tracker
 %{_datadir}/glib-2.0/schemas/*
 %{_userunitdir}/tracker-store.service
@@ -131,7 +124,7 @@ install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_ar
 
 %files help
 %{_mandir}/*/tracker*.gz
-%doc NEWS README
+%doc NEWS README.md docs/reference/COPYING
 %dir %{_datadir}/gtk-doc
 %dir %{_datadir}/gtk-doc/html
 %{_datadir}/gtk-doc/html/libtracker-control/
@@ -140,6 +133,12 @@ install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_ar
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Jun 7 2021 weijin deng <weijin.deng@turbolinux.com.cn> - 2.3.6-1
+- Upgrade to 2.3.6
+- Update Version, Release, Source0, BuildRequires
+- Use meson build tools, delete sed operation of configure script
+- Update stage 'build', 'install', 'files'
+
 * Thu Nov 21 2019 chengquan <chengquan3@huawei.com> - 2.1.5-3
 - Type:bugfix
 - ID:NA
