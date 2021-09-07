@@ -3,7 +3,7 @@
 
 Name:           tracker
 Version:        2.3.6
-Release:        1
+Release:        2
 Summary:        A filesystem indexer, metadata storage system and search tool
 License:        GPLv2+
 URL:            https://wiki.gnome.org/Projects/Tracker
@@ -11,7 +11,7 @@ Source0:        https://download.gnome.org/sources/%{name}/2.3/%{name}-%{version
 Source1:        tracker.conf
 
 BuildRequires:  graphviz gtk-doc systemd libxslt gettext meson intltool
-BuildRequires:  libappstream-glib vala libstemmer-devel dbus-daemon
+BuildRequires:  libappstream-glib vala libstemmer-devel dbus-daemon chrpath
 BuildRequires:  pkgconfig(gobject-introspection-1.0)
 BuildRequires:  pkgconfig(icu-i18n) pkgconfig(icu-uc)
 BuildRequires:  pkgconfig(json-glib-1.0) pkgconfig(libnm)
@@ -76,6 +76,9 @@ find %{buildroot} -type f -name "*.la" -delete
 %chrpath_delete
 install -d %{buildroot}%{_sysconfdir}/ld.so.conf.d
 install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
+chrpath --delete %{buildroot}/usr/libexec/tracker-store
+chrpath --delete %{buildroot}%{_bindir}/tracker
+chrpath --delete %{buildroot}%{_libdir}/libtracker-*.so.*
 
 %pre
 
@@ -133,6 +136,12 @@ install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_ar
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Sep 06 2021 Hongxun Ren<renhongxun@huawei.com> - 2.3.6-2
+- Type:enhanence
+- ID:NA
+- SUG:NA
+- DESC:remove rpath
+
 * Mon Jun 7 2021 weijin deng <weijin.deng@turbolinux.com.cn> - 2.3.6-1
 - Upgrade to 2.3.6
 - Update Version, Release, Source0, BuildRequires
