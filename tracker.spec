@@ -3,12 +3,13 @@
 
 Name:           tracker
 Version:        2.3.6
-Release:        2
+Release:        3
 Summary:        A filesystem indexer, metadata storage system and search tool
 License:        GPLv2+
 URL:            https://wiki.gnome.org/Projects/Tracker
 Source0:        https://download.gnome.org/sources/%{name}/2.3/%{name}-%{version}.tar.xz
 Source1:        tracker.conf
+Patch1:         tracker-2.3.6-sw.patch
 
 BuildRequires:  graphviz gtk-doc systemd libxslt gettext meson intltool
 BuildRequires:  libappstream-glib vala libstemmer-devel dbus-daemon chrpath
@@ -136,6 +137,12 @@ chrpath --delete %{buildroot}%{_libdir}/libtracker-*.so.*
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Wed Oct 26 2022 wuzx<wuzx1226@qq.com> - 2.3.6-3
+- Type:feature
+- CVE:NA
+- SUG:NA
+- DESC:Add sw64 architecture
+
 * Mon Sep 06 2021 Hongxun Ren<renhongxun@huawei.com> - 2.3.6-2
 - Type:enhanence
 - ID:NA
