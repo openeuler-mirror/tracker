@@ -3,7 +3,7 @@
 
 Name:           tracker
 Version:        2.3.6
-Release:        2
+Release:        3
 Summary:        A filesystem indexer, metadata storage system and search tool
 License:        GPLv2+
 URL:            https://wiki.gnome.org/Projects/Tracker
@@ -17,6 +17,7 @@ BuildRequires:  pkgconfig(icu-i18n) pkgconfig(icu-uc)
 BuildRequires:  pkgconfig(json-glib-1.0) pkgconfig(libnm)
 BuildRequires:  pkgconfig(libsoup-2.4) pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(sqlite3) pkgconfig(uuid)
+BuildRequires:  cmake dbus-devel
 
 Recommends: tracker-miners%{?_isa}
 
@@ -136,6 +137,10 @@ chrpath --delete %{buildroot}%{_libdir}/libtracker-*.so.*
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Feb 20 2023 lin zhang <lin.zhang@turbolinux.com.cn> - 2.3.6-3
+- add BuildRequires: cmake dbus-devel
+- fix issue:I6GNE4
+
 * Mon Sep 06 2021 Hongxun Ren<renhongxun@huawei.com> - 2.3.6-2
 - Type:enhanence
 - ID:NA
