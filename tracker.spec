@@ -3,12 +3,11 @@
 
 Name:           tracker
 Version:        2.3.6
-Release:        3
+Release:        4
 Summary:        A filesystem indexer, metadata storage system and search tool
 License:        GPLv2+
 URL:            https://wiki.gnome.org/Projects/Tracker
 Source0:        https://download.gnome.org/sources/%{name}/2.3/%{name}-%{version}.tar.xz
-Source1:        tracker.conf
 Patch1:         tracker-2.3.6-sw.patch
 
 BuildRequires:  graphviz gtk-doc systemd libxslt gettext meson intltool
@@ -75,11 +74,11 @@ find %{buildroot} -type f -name "*.la" -delete
 
 # remove rpath info
 %chrpath_delete
-install -d %{buildroot}%{_sysconfdir}/ld.so.conf.d
-install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 chrpath --delete %{buildroot}/usr/libexec/tracker-store
 chrpath --delete %{buildroot}%{_bindir}/tracker
 chrpath --delete %{buildroot}%{_libdir}/libtracker-*.so.*
+mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
+echo "%{_libdir}/tracker-2.0" > %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 
 %pre
 
@@ -137,6 +136,9 @@ chrpath --delete %{buildroot}%{_libdir}/libtracker-*.so.*
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Apr 24 2023 panchenbo <panchenbo@kylinsec.com.cn> - 2.3.6-4
+- touch /etc/ld.so.conf.d/%{name}_%{_arch}.conf in spec ，del SOURCE1
+
 * Wed Oct 26 2022 wuzx<wuzx1226@qq.com> - 2.3.6-3
 - Type:feature
 - CVE:NA
