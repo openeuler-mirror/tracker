@@ -3,7 +3,7 @@
 
 Name:           tracker
 Version:        2.3.6
-Release:        3
+Release:        4
 Summary:        A filesystem indexer, metadata storage system and search tool
 License:        GPLv2+
 URL:            https://wiki.gnome.org/Projects/Tracker
@@ -58,6 +58,10 @@ Man pages and other related documents for %{name}.
 %autosetup -p1
 
 %build
+%if "%toolchain" == "clang"
+	export CFLAGS="$CFLSGS -Wno-int-conversion"
+	export CXXFLAGS="$CXXFLSGS -Wno-int-conversion"
+%endif
 # Disable the functional tests
 %meson \
   -Ddocs=true \
@@ -137,6 +141,9 @@ chrpath --delete %{buildroot}%{_libdir}/libtracker-*.so.*
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Sat May 06 2023 yoo <sunyuechi@iscas.ac.cn> - 2.3.6-4
+- fix clang build error
+
 * Mon Feb 20 2023 lin zhang <lin.zhang@turbolinux.com.cn> - 2.3.6-3
 - add BuildRequires: cmake dbus-devel
 - fix issue:I6GNE4
