@@ -59,8 +59,8 @@ Man pages and other related documents for %{name}.
 
 %build
 %if "%toolchain" == "clang"
-	export CFLAGS="$CFLSGS -Wno-int-conversion"
-	export CXXFLAGS="$CXXFLSGS -Wno-int-conversion"
+	export CFLAGS="$CFLSGS -Wno-error=int-conversion"
+	export CXXFLAGS="$CXXFLSGS -Wno-error=int-conversion"
 %endif
 # Disable the functional tests
 %meson \
